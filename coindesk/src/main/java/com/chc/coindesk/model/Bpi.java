@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.math.BigInteger;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,8 +18,8 @@ public class Bpi {
     int currency_code;
     String symbol;
     String rate;
-    float rate_float;
+    double rate_float;
     int description;
-    LocalTime created;
-    LocalTime updated;
+    LocalDateTime created;
+    LocalDateTime updated;
 }

@@ -1,9 +1,12 @@
 package com.chc.coindesk.dto;
 
+import lombok.Data;
+
+@Data
 public class BpiDTO {
-    String currency_code;
+    String code;
     String symbol;
     String rate;
     String description;
-    float rate_float;
+    double rate_float;
 }
