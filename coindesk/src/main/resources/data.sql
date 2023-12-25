@@ -1,9 +1,9 @@
 insert into bpi (currency_code, symbol, rate, rate_float, description, created, updated)
-values (1,'&#36;','44,084.7681',44084.7681,1, CURRENT_TIME, CURRENT_TIME);
+values ('USD','&#36;','44,084.7681',44084.7681,1, CURRENT_TIME, CURRENT_TIME);
 insert into bpi (currency_code, symbol, rate, rate_float, description, created, updated)
-values (2, '&pound;', '36,836.8795', 36836.8795,1, CURRENT_TIME, CURRENT_TIME);
+values ('GBP', '&pound;', '36,836.8795', 36836.8795,1, CURRENT_TIME, CURRENT_TIME);
 insert into bpi (currency_code, symbol, rate, rate_float, description, created, updated)
-values (3, '&euro;', '42,945.0005', 42945.0005,1, CURRENT_TIME, CURRENT_TIME);
+values ('EUR', '&euro;', '42,945.0005', 42945.0005,1, CURRENT_TIME, CURRENT_TIME);
 
 
 insert into language (id, language) values ('en-US', 'English');

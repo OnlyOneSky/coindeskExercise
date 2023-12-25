@@ -11,13 +11,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Bpi {
+public class FetchInfo {
     @Id
-    String currencyCode;
-    String symbol;
-    String rate;
-    double rateFloat;
-    int description;
-    LocalDateTime created;
-    LocalDateTime updated;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private BigInteger id;
+    private String update;
+    private String updatedISO;
+    private String updateduk;
+    private String disclaimer;
+    private String chartName;
+    private String comment;
 }

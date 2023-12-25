@@ -9,5 +9,8 @@ import java.util.Map;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrentPrice {
+    private Map<String, String> time;
+    private String disclaimer;
+    private String chartName;
     private Map<String, BpiDTO> bpi;
 }
