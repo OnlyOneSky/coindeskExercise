@@ -11,14 +11,15 @@
 
 實作加分題
 1. 完成 - 印出所有 API 被呼叫 以及 呼叫外部 API 的 request and response body log。
-2. 完成 - swagger-ui (http://localhost:8080/swagger-ui.html)
+2. 完成 - swagger-ui (https://localhost:8443/swagger-ui.html)
 3. 完成 - 多語系設計 (1:English 2:Chinese)
 4. 完成 - 2 個以上 design pattern 實作 Builder (CurrentPriceDTO) and Facade (UpdateBPIFacade)
 5. 能夠運行在 Docker
 6. 完成 - Error handling 處理 API response
-7. 加解密技術應用
+7. 完成-加解密技術應用
 
 備註:
-1. 查訽單支BPI 功能(api/v1/coindesk/lookup-individual) 在Swagger 上有錯誤, 目前的認知是OpenAi library 3.0 在Get request的
-   RequestBody 的限制. 如需測試本支API請下載coindesk.json並從Postman載入後即可測試.
+1. Build file for the project is build.gradle rather then pom.xml.
+2. 查訽單支BPI 功能(api/v1/coindesk/lookup-individual) 在Swagger 上有錯誤, 目前的認知是OpenAi library 3.0 在Get request的
+   RequestBody 的限制. 如需測試本支API請下載resources/coindesk.postman_collection並從Postman載入後即可測試.
 
