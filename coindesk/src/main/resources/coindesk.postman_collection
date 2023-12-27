@@ -70,7 +70,69 @@
 			"response": []
 		},
 		{
+			"name": "Add New-docker",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"EFG\",\r\n    \"symbol\": \"&#18;\",\r\n    \"rate\": \"56,264.2424\",\r\n    \"description\": \"EFG Dollar\",\r\n    \"rate_float\": 56264.2424\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:10888/api/v1/coindesk/add-new",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "10888",
+					"path": [
+						"api",
+						"v1",
+						"coindesk",
+						"add-new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ABC\",\r\n    \"symbol\": \"&#38;\",\r\n    \"rate\": \"43,264.2424\",\r\n    \"description\": \"ABC Dollar3\",\r\n    \"rate_float\": 43264.2424\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/v1/coindesk/update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"v1",
+						"coindesk",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update-docker",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -84,12 +146,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/coindesk/update",
-					"protocol": "http",
+					"raw": "https://localhost:10888/api/v1/coindesk/update",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10888",
 					"path": [
 						"api",
 						"v1",
@@ -132,7 +194,62 @@
 			"response": []
 		},
 		{
+			"name": "Delete-docker",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"ABC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:10888/api/v1/coindesk/delete",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "10888",
+					"path": [
+						"api",
+						"v1",
+						"coindesk",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Lookup individual bpi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/v1/coindesk/lookup-individual/USD/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"v1",
+						"coindesk",
+						"lookup-individual",
+						"USD",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lookup individual bpi-docker",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -149,17 +266,19 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/coindesk/lookup-individual",
-					"protocol": "http",
+					"raw": "https://localhost:10888/api/v1/coindesk/lookup-individual/USD/2",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10888",
 					"path": [
 						"api",
 						"v1",
 						"coindesk",
-						"lookup-individual"
+						"lookup-individual",
+						"USD",
+						"2"
 					]
 				}
 			},
@@ -167,6 +286,29 @@
 		},
 		{
 			"name": "Lookup all in language id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/v1/coindesk/lookup-all/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"v1",
+						"coindesk",
+						"lookup-all",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lookup all in language id-docker",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -183,17 +325,18 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/coindesk/lookup-individual",
-					"protocol": "http",
+					"raw": "https://localhost:10888/api/v1/coindesk/lookup-all/2",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10888",
 					"path": [
 						"api",
 						"v1",
 						"coindesk",
-						"lookup-individual"
+						"lookup-all",
+						"2"
 					]
 				}
 			},

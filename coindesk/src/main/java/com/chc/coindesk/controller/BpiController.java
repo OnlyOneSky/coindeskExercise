@@ -2,7 +2,6 @@ package com.chc.coindesk.controller;
 
 import com.chc.coindesk.dto.BpiDTO;
 import com.chc.coindesk.dto.DeleteDTO;
-import com.chc.coindesk.dto.LookUpDTO;
 import com.chc.coindesk.service.BpiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +33,7 @@ public class BpiController {
     @GetMapping("/invoke-coindesk")
     public ResponseEntity<?> updateCurrentPrice() {
         logger.info(String.format("update-price doesn't take any input."));
-        if(bpiService.updateCurrentPrices()) {
+        if (bpiService.updateCurrentPrices()) {
             return new ResponseEntity<>("Retrieve and update data successfully.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Retrieve and update data failed.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,7 +46,7 @@ public class BpiController {
         logger.info(String.format("add-new Request body %s", bpiDTO.toString()));
         try {
             boolean isAdded = bpiService.addOrUpdateBpi(bpiDTO);
-            if(isAdded){
+            if (isAdded) {
                 return new ResponseEntity<>("Data added successfully.", HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("Data could not be added.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,7 +63,7 @@ public class BpiController {
         logger.info(String.format("update Request body %s", bpiDTO.toString()));
         try {
             boolean isAdded = bpiService.addOrUpdateBpi(bpiDTO);
-            if(isAdded){
+            if (isAdded) {
                 return new ResponseEntity<>("Data updated successfully.", HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("Data could not be updated.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,16 +95,12 @@ public class BpiController {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = BpiDTO.class)))
                     }))
-    @GetMapping("/lookup-individual")//Get request on OpenApi 3.0 can't take request body
-    public ResponseEntity<?> lookupByCodeAndLanguageId(@RequestBody LookUpDTO request) {
-        logger.info(String.format("lookup Request body %s", request.toString()));
+    @GetMapping("/lookup-individual/{currencyCode}/{languageId}")//Get request on OpenApi 3.0 can't take request body
+    public ResponseEntity<?> lookupByCodeAndLanguageId(@PathVariable @Parameter(name = "currencyCode", description = "Currency Code", example = "USD") String currencyCode,
+                                                       @PathVariable @Parameter(name = "languageId", description = "Language id (1:English 2:Chinese)", example = "2") int languageId) {
+        logger.info(String.format("lookup individual path variables currencyCode = %s languageId = %d", currencyCode, languageId));
         try {
-            if (request.getCode() != null) {
-                BpiDTO bpiDTO = bpiService.findByCodeAndLanguage(request.getCode(), request.getLanguage_id());
-                return new ResponseEntity<>(bpiDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Invalid request parameters", HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(bpiService.findByCodeAndLanguage(currencyCode, languageId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Exception occurred while looking up individual BPI: ", e);
             return new ResponseEntity<>("An error occurred while processing your lookup request.", HttpStatus.INTERNAL_SERVER_ERROR);

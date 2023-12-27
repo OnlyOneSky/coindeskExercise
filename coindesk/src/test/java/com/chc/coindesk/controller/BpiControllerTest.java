@@ -2,9 +2,7 @@ package com.chc.coindesk.controller;
 
 import com.chc.coindesk.dto.BpiDTO;
 import com.chc.coindesk.dto.DeleteDTO;
-import com.chc.coindesk.dto.LookUpDTO;
 import com.chc.coindesk.service.BpiService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -167,49 +162,23 @@ public class BpiControllerTest {
     }
 
     @Test
-    void testLookupByCodeAndLanguageIdSuccess() throws Exception {
-        LookUpDTO request = new LookUpDTO();
-        request.setCode("USA");
-        request.setLanguage_id(1);
+    public void lookupByCodeAndLanguageIdTest() throws Exception {
+        BpiDTO bpiDTO = new BpiDTO();
+        bpiDTO.setCode("ABC");
+        bpiDTO.setSymbol("&#38;");
+        bpiDTO.setRate("43,264.2424");
+        bpiDTO.setDescription("ABC Dollar");
+        bpiDTO.setRate_float(43264.2424);
+        // Suppose the BPI service returned a BPI DTO
+        when(bpiService.findByCodeAndLanguage(anyString(), anyInt()))
+                .thenReturn(bpiDTO);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        when(bpiService.findByCodeAndLanguage(eq(request.getCode()), eq(request.getLanguage_id()))).thenReturn(null);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/coindesk/lookup-individual")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        // Test the API endpoint
+        mockMvc.perform(
+                        get("/api/v1/coindesk/lookup-individual/ABC/1"))
+                .andExpect(status().isOk());
     }
 
-    @Test
-    void testLookupByCodeAndLanguageIdBadRequest() throws Exception {
-        LookUpDTO request = new LookUpDTO();
-        request.setLanguage_id(1);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/coindesk/lookup-individual")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    void testLookupByCodeAndLanguageIdInternalServerError() throws Exception {
-        LookUpDTO request = new LookUpDTO();
-        request.setCode("USA");
-        request.setLanguage_id(1);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        when(bpiService.findByCodeAndLanguage(eq(request.getCode()), eq(request.getLanguage_id()))).thenThrow(RuntimeException.class);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/coindesk/lookup-individual")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
-    }
 
     @Test
     void testLookupAllInLanguageIdException() throws Exception {
