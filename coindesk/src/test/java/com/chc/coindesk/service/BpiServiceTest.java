@@ -31,7 +31,7 @@ public class BpiServiceTest {
     FetchInfoRepository fetchInfoRepository = Mockito.mock(FetchInfoRepository.class);
     RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
-    BpiService bpiService = new BpiService(restTemplate, currencyRepository, bpiRepository, fetchInfoRepository, translationRepository);
+    BpiService bpiService = new BpiService(restTemplate, currencyRepository, bpiRepository, fetchInfoRepository, translationRepository, null);
 
 /*    @Test
     public void testUpdateCurrentPrices() throws Exception {

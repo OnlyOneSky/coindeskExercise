@@ -39,16 +39,19 @@ public class BpiService {
 
     private TranslationRepository translationRepository;
 
-    BpiRepository bpiRepository;
+    private BpiRepository bpiRepository;
+
+    private UpdateBPIFacade updateBPIFacade;
 
     public BpiService(RestTemplate restTemplate, CurrencyRepository currencyRepository,
                       BpiRepository bpiRepository, FetchInfoRepository fetchInfoRepository,
-                      TranslationRepository translationRepository) {
+                      TranslationRepository translationRepository, UpdateBPIFacade updateBPIFacade) {
         this.restTemplate = restTemplate;
         this.currencyRepository = currencyRepository;
         this.bpiRepository = bpiRepository;
         this.fetchInfoRepository = fetchInfoRepository;
         this.translationRepository = translationRepository;
+        this.updateBPIFacade = updateBPIFacade;
     }
 
     @Transactional
@@ -70,36 +73,11 @@ public class BpiService {
             throw new RuntimeException(e);
         }
 
-        FetchInfo fetchInfo = saveFetchInfo(bitcoinData);
-        fetchInfoRepository.save(fetchInfo);
-
-        List<Bpi> bpiList = transferToBPIs(bitcoinData);
-        bpiRepository.saveAll(bpiList);
-
+        updateBPIFacade.setBitcoinData(bitcoinData);
+        updateBPIFacade.doUpdate();
         return true;
     }
 
-    private static FetchInfo saveFetchInfo(CurrentPriceDTO bitcoinData) {
-        FetchInfo fetchInfo = new FetchInfo();
-
-        bitcoinData.getTime().values().forEach(str -> System.out.println(str));
-        for(Map.Entry<String, String> entry: bitcoinData.getTime().entrySet()) {
-            switch(entry.getKey()) {
-                case "updated":
-                    fetchInfo.setUpdate(entry.getValue());
-                    break;
-                case "updatedISO":
-                    fetchInfo.setUpdatedISO(entry.getValue());
-                    break;
-                default:
-                    fetchInfo.setUpdateduk(entry.getValue());
-            }
-        }
-
-        fetchInfo.setDisclaimer(bitcoinData.getDisclaimer());
-        fetchInfo.setChartName(bitcoinData.getChartName());
-        return fetchInfo;
-    }
 
     @Transactional
     public boolean addOrUpdateBpi(BpiDTO bpiDTO) {
@@ -184,29 +162,5 @@ public class BpiService {
                 .setChartName(latestFetchInfo.getChartName())
                 .setBpi(bpiMap)
                 .build();
-    }
-
-
-    private List<Bpi> transferToBPIs(CurrentPriceDTO bitcoinData) {
-
-        return bitcoinData.getBpi().values().stream()
-                .map(currency -> {
-                    Bpi bpi = new Bpi();
-                    //Skip updating if the currency not exist
-                    Currency currentCurrency = this.currencyRepository.findIdByCurrencyCode(currency.getCode());
-                    if (currentCurrency == null) {
-                        return null;
-                    }
-
-                    bpi.setCurrencyCode(currency.getCode());
-                    bpi.setSymbol(currency.getSymbol());
-                    bpi.setRate(currency.getRate());
-                    bpi.setDescription(PolyglotField.CURRENCY_DESCRIPTION.getId());
-                    bpi.setRateFloat(currency.getRate_float());
-                    bpi.setCreated(LocalDateTime.now());
-                    bpi.setUpdated(LocalDateTime.now());
-
-                    return bpi;
-                }).collect(Collectors.toList());
     }
 }
