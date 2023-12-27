@@ -12,13 +12,10 @@ import com.chc.coindesk.util.PolyglotField;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -106,11 +103,16 @@ public class BpiService {
 
     @Transactional
     public boolean addOrUpdateBpi(BpiDTO bpiDTO) {
-        Bpi bpi = prepareBpiFromDTO(bpiDTO);
-        int newCurrencyId = getCurrencyId(bpiDTO);
-        handleTranslation(newCurrencyId, bpiDTO.getDescription());
-        bpiRepository.save(bpi);
-        return true;
+        try {
+            Bpi bpi = prepareBpiFromDTO(bpiDTO);
+            int newCurrencyId = getCurrencyId(bpiDTO);
+            handleTranslation(newCurrencyId, bpiDTO.getDescription());
+            bpiRepository.save(bpi);
+            return true;
+        } catch (DataAccessException e) {
+            logger.error("Error during adding or updating Bpi: " + e.getMessage());
+            return false;
+        }
     }
 
     private Bpi prepareBpiFromDTO(BpiDTO bpiDTO) {
