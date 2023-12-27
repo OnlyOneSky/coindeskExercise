@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public interface BpiRepository extends JpaRepository<Bpi, BigInteger> {
     Bpi findByCurrencyCode(String code);
@@ -18,4 +19,12 @@ public interface BpiRepository extends JpaRepository<Bpi, BigInteger> {
             "and translation.translationKey.languageId = :languageId " +
             "and bpi.currencyCode = :currencyCode")
     BpiDTO findByCodeAndLanguageId(@Param("currencyCode") String currencyCode, @Param("languageId") int languageId);
+
+    @Query("select new com.chc.coindesk.dto.BpiDTO(bpi.currencyCode, bpi.symbol, bpi.rate, translation.translation, bpi.rateFloat) " +
+            "from Bpi bpi join Currency currency on bpi.currencyCode = currency.currencyCode " +
+            "join Translation translation on translation.translationKey.textColumnId = bpi.description " +
+            "and currency.id = translation.translationKey.translatingTableUid " +
+            "and translation.translationKey.languageId = :languageId ")
+    List<BpiDTO> findAllInLanguageId(@Param("languageId") int languageId);
+
 }

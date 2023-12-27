@@ -1,23 +1,58 @@
 package com.chc.coindesk.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class BpiDTO {
-
+    @Schema(
+            description = "Currency code",
+            name = "code",
+            type = "string",
+            example = "ABC"
+    )
     @NotEmpty(message = "Code may not be empty")
-    String code;
+    private String code;
 
+    @Schema(
+            description = "Currency symbol",
+            name = "symbol",
+            type = "string",
+            example = "&#38;"
+    )
     @NotEmpty
-    String symbol;
+    private String symbol;
+
+    @Schema(
+            description = "Rate in string format",
+            name = "rate",
+            type = "string",
+            example = "43,264.2424"
+    )
     @NotEmpty
-    String rate;
+    private String rate;
+
+    @Schema(
+            description = "Currency description",
+            name = "description",
+            type = "string",
+            example = "ABC Dollar"
+    )
     @NotEmpty
-    String description;
+    private String description;
+
+    @Schema(
+            description = "Rate in float type",
+            name = "rate_float",
+            type = "double",
+            example = "43264.2424"
+    )
     @NotEmpty
-    double rate_float;
+    private double rate_float;
 }

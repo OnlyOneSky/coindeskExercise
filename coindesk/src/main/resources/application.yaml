@@ -12,7 +12,9 @@ spring:
     console:
       enabled: true
 
-
+coindesk:
+  currentprice:
+    url: https://api.coindesk.com/v1/bpi/currentprice.json
 #spring:
 #  h2:
 #    console:
